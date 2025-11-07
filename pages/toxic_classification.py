@@ -6,7 +6,7 @@ import sys
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-from func_tools import get_toxic_classification_with_attention, merge_subtokens
+from models.RuBert.func_tools import get_toxic_classification_with_attention, merge_subtokens
 import pandas as pd
 
 # ===== НАСТРОЙКА СТРАНИЦЫ =====

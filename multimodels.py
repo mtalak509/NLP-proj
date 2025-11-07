@@ -102,17 +102,17 @@ if choice == 'Bert':
     @st.cache_resource
     def load_model():
         # Загрузите конфигурацию
-        config = torch.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/models/ML+LSTM+Bert/my_tinybert_config.pth")
+        config = torch.load("models/ML+LSTM+Bert/bert/my_tinybert_config.pth")
         
         # Создайте модель
         model = MyTinyBERT(num_classes=config['num_classes'], dropout=config['dropout'])
         
         # Загрузите веса
-        model.load_state_dict(torch.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/models/ML+LSTM+Bert/my_tinybert_finetuned.pth", map_location=torch.device('cpu')))
+        model.load_state_dict(torch.load("models/ML+LSTM+Bert/bert/my_tinybert_finetuned.pth", map_location=torch.device('cpu')))
         model.eval()
         
         # Загрузите токенизатор
-        tokenizer = AutoTokenizer.from_pretrained("/home/nikita/ds-phase-2/10-nlp/NLP-proj/models/ML+LSTM+Bert/tokenuzer")
+        tokenizer = AutoTokenizer.from_pretrained("models/ML+LSTM+Bert/bert/tokenuzer")
         
         return model, tokenizer
 
@@ -188,7 +188,7 @@ if choice == 'Bert':
         st.success(f"**Финальный прогноз:** {final_label} (уверенность: {max_prob.item():.4f})     Время: {inference_time:.4f}")
 
 elif choice == 'LSTM':
-    df = pd.read_json('/home/nikita/ds-phase-2/10-nlp/NLP-proj/data/healthcare_facilities_reviews.jsonl',lines=True)
+    df = pd.read_json('data/healthcare_facilities_reviews.jsonl',lines=True)
     df = df[['content','sentiment']]
     content = df['content'].tolist()
     preprocessed = [data_preprocessing(content) for content in content]
@@ -370,10 +370,10 @@ elif choice == 'LSTM':
     metric = BinaryAccuracy()
 
 
-    vocab_to_int = joblib.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/pages/vocab_to_int2.pkl")
+    vocab_to_int = joblib.load("models/ML+LSTM+Bert/lstm/vocab_to_int2.pkl")
     int_to_vocab = {j:i for i, j in vocab_to_int.items()}
     state_dict = torch.load(
-            "/home/nikita/ds-phase-2/10-nlp/NLP-proj/pages/lstm_sentiment_model2.pth", 
+            "models/ML+LSTM+Bert/lstm/lstm_sentiment_model.pth", 
             map_location='cpu'
         )
     model.embedding = nn.Embedding(len(vocab_to_int) + 1, 16)
@@ -539,7 +539,7 @@ elif choice == 'LogReg':
     import pandas as pd
 
     # Загружаем наш файл с отзывами
-    df = pd.read_json('/home/nikita/ds-phase-2/10-nlp/NLP-proj/data/healthcare_facilities_reviews.jsonl',lines=True)
+    df = pd.read_json('data/healthcare_facilities_reviews.jsonl',lines=True)
     from sklearn.feature_extraction.text import CountVectorizer
     from sklearn.preprocessing import LabelEncoder
 
@@ -561,16 +561,15 @@ elif choice == 'LogReg':
     from sklearn.linear_model import LogisticRegression
     lr_model = LogisticRegression()
     import matplotlib.pyplot as plt
-    import seaborn as sns
     import numpy as np
     from sklearn.metrics import (accuracy_score, precision_score, recall_score, 
                             f1_score, confusion_matrix, classification_report, 
                             roc_curve, auc, precision_recall_curve)
     from sklearn.model_selection import learning_curve
     import joblib
-    vectorizer = joblib.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/pages/logreg_model_vectorizer.pkl")
-    lr_model = joblib.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/pages/logreg_model_model.pkl")
-    label_encoder = joblib.load("/home/nikita/ds-phase-2/10-nlp/NLP-proj/pages/logreg_model_label_encoder.pkl")
+    vectorizer = joblib.load("models/ML+LSTM+Bert/lm/logreg_model_vectorizer.pkl")
+    lr_model = joblib.load("models/ML+LSTM+Bert/lm/logreg_model_model.pkl")
+    label_encoder = joblib.load("models/ML+LSTM+Bert/lm/logreg_model_label_encoder.pkl")
     st.title("📊 Анализ отзывов о поликлиниках (LogReg)")
     st.write("Введите отзыв для анализа настроения:")
 

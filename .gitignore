@@ -1,1 +1,3 @@
 .nlp_venv/
+models/ML+LSTM+Bert/bert/my_tinybert_finetuned.pth
+data/healthcare_facilities_reviews.jsonl
